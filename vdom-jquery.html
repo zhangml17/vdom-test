@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vdom-jquery</title>
+
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+</head>
+<body>
+    <div id="container"></div>
+    <button id="btn">change</button>
+
+    <script>
+        var data = [
+            {
+                name: "张三",
+                age: 23,
+                address: "北京"
+            },
+            {
+                name: "李四",
+                age: 24,
+                address: "上海"
+            },
+            {
+                name: "王五",
+                age: 27,
+                address: "广州"
+            },
+            {
+                name: "李阳",
+                age: 29,
+                address: "西安"
+            },
+        ]
+
+        function render(data) {
+            var $container = $('#container')
+            $container.html('')
+
+            // 拼接table
+            var $table = $('<table>')
+
+            // // 渲染到页面 (在这里渲染，后续的操作会导致页面渲染多次，降低性能)
+            // $container.append($table)
+
+            $table.append($('<tr><td>name</td><td>age</td><td>address</td></tr>'))
+            data.forEach(function(item) {
+                $table.append($('<tr><td>'+item.name+'</td><td>'+item.age+'</td><td>'+item.address+'</td></tr>'))
+            })
+            // 渲染到页面 (等table构建好之后，一次渲染到页面上)
+            $container.append($table)
+        }
+
+        $('#btn').click(function(){
+            data[1].age = 30
+            data[2].address = "深圳"
+            render(data)
+        })
+
+        render(data)
+        
+    </script>
+</body>
+</html>
