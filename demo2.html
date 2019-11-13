@@ -4,18 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>snabbdom</title>
 </head>
 <body>
-    <script>
-        var d = document.createElement('div')
-        
-        var result = ''
+    <div id="container"></div>
+    <button id="btn">change</button>
 
-        for(let k in d) {
-            result += ' | ' + k
-        }
-        console.log(result)
+    <script src="https://cdn.bootcss.com/snabbdom/0.7.3/snabbdom.js"></script>
+    <script src="https://cdn.bootcss.com/snabbdom/0.7.3/snabbdom-class.js"></script>
+    <script src="https://cdn.bootcss.com/snabbdom/0.7.3/snabbdom-style.js"></script>
+    <script src="https://cdn.bootcss.com/snabbdom/0.7.3/snabbdom-props.js"></script>
+    <script src="https://cdn.bootcss.com/snabbdom/0.7.3/snabbdom-eventlisteners.js"></script>
+    <script src="https://cdn.bootcss.com/snabbdom/0.7.3/h.js"></script>
+
+    <script>
+        // 定义patch（固定写法）
+        var patch = snabbdom.init({
+            snabbdom_class,
+            snabbdom_style,
+            snabbdom_props,
+            snabbdom_eventlisteners
+        })
+
+        var h = snabbdom.h
+
+        var vnode = h('ul#list', {}, [
+            h('li.item', {}, 'item 1'),
+            h('li.item', {}, 'item 2'),
+        ])
+
+        var container = document.getElementById('container')
+
+        patch(container, vnode)
+
+        document.getElementById('btn').addEventListener('click', function(){
+            var newVnode = h('ul#list', {}, [
+                h('li.item', {}, 'item 1'),
+                h('li.item', {}, 'item G'),
+                h('li.item', {}, 'item 3')
+            ])
+            patch(vnode, newVnode)
+        })
     </script>
 </body>
 </html>
