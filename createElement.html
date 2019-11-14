@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vnode-node</title>
+</head>
+<body>
+    <h3>patch(container, vnode)模拟</h3>
+    <script>
+        // 将vnode转换为真实的node节点 
+        function createElement(vnode) {
+            var tag = vnode.tag
+            var attrs = vnode.attrs || {}
+            var children = vnode.children || []
+
+            if(tag == null) {
+                return
+            }
+
+            // 创建真实的Node
+            var elem = document.createElement(tag)
+
+            // 向node上添加属性
+            var attrName
+            for(attrName in attrs) {
+                if( attrs.hasOwnProperty(attrName)) {
+                    elem.setAttribute(attrName, attrs[attrName])
+                }
+            }
+
+            // 添加子元素
+            children.forEach(function(vchildNode) {
+                if(vchildNode) {
+                    elem.appendChild(createElement(vchildNode))
+                }
+            })
+            return elem
+        }
+    </script>
+</body>
+</html>
