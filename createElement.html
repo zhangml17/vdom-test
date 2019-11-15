@@ -4,40 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>vnode-node</title>
+    <title>模拟vnode生成真实dom</title>
 </head>
 <body>
-    <h3>patch(container, vnode)模拟</h3>
+    <div id="d"></div>
     <script>
+        var vnode = {
+            tag: 'ul',
+            attrs: {
+                id: 'list',
+                style: 'background-color: red; width:100px; height:100px;',
+            },
+            children:[
+                {
+                    tag: 'li',
+                    attrs: {
+                        id: 'item',
+                        style: 'background-color: yellow'
+                    },
+                    children: [ 'item1' ]
+                },
+                {
+                    tag: 'li',
+                    attrs: {
+                        id: 'item',
+                        style: 'background-color: blue'
+                    },
+                    children: [ 'item2' ]
+                },
+                {
+                    tag: 'li',
+                    attrs: {
+                        id: 'item',
+                        style: 'background-color: pink'
+                    },
+                    children: [ 'item3' ]
+                }
+            ]
+        }
+
         // 将vnode转换为真实的node节点 
         function createElement(vnode) {
             var tag = vnode.tag
             var attrs = vnode.attrs || {}
             var children = vnode.children || []
 
-            if(tag == null) {
-                return
-            }
+            if(tag == null) return
 
             // 创建真实的Node
             var elem = document.createElement(tag)
 
             // 向node上添加属性
-            var attrName
-            for(attrName in attrs) {
-                if( attrs.hasOwnProperty(attrName)) {
-                    elem.setAttribute(attrName, attrs[attrName])
+            for(var k in attrs) {
+                if(attrs.hasOwnProperty(k)) {
+                    elem.setAttribute(k, attrs[k])
                 }
             }
 
             // 添加子元素
-            children.forEach(function(vchildNode) {
-                if(vchildNode) {
-                    elem.appendChild(createElement(vchildNode))
+            children.forEach(function(childVnode){
+                if(typeof childVnode ===  'string') {
+                    elem.innerHTML = childVnode
+                }else if(childVnode instanceof Object){
+                    elem.appendChild(createElement(childVnode))
                 }
             })
             return elem
-        }
+        }    
+        var e = createElement(vnode)
+        document.getElementById('d').appendChild(e)
     </script>
 </body>
 </html>
